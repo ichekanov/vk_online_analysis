@@ -1,4 +1,4 @@
-from ..models import User, session
+from models import User, session
 
 
 def find_user_by_name(name: str) -> User:

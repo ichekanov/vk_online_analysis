@@ -1,7 +1,7 @@
-from sqlite3 import IntegrityError
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import insert
 
-from ..models import Platform, session
+from models import Platform, session
 
 
 def create_platform(slug: str, description: str):

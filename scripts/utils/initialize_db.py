@@ -1,8 +1,8 @@
 from utils.create_platform import create_platform
 from utils.create_user import create_user
 
-from ..constants.platforms import Platforms
-from ..constants.users import USERS
+from constants.platforms import Platforms
+from constants.users import USERS
 
 
 def initialize_db():

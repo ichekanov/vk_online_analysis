@@ -1,4 +1,4 @@
-from ..models import User, session
+from models import User, session
 
 
 def get_users() -> list[User]:

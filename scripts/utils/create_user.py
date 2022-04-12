@@ -1,7 +1,7 @@
-from sqlite3 import IntegrityError
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy import insert
 
-from ..models import User, session
+from models import User, session
 
 
 def create_user(name: str, vk_id: int):
