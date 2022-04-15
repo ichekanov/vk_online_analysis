@@ -6,9 +6,8 @@ from sqlalchemy import and_, select
 
 def find_user_sessions_by_period(user_id: int, start_date: datetime, end_date: datetime) -> list[Activity]:
     """
-    Функция для поиска сессий определенного пользователя от начальной 
-    до конечной даты в базе данных. Для улучшения графиков start_date сдвигается 
-    на час назад, а end_date -- на час вперёд.
+    Функция для поиска сессий определенного пользователя от начальной
+    до конечной даты в базе данных.
 
     Параметры
     ---------
@@ -28,8 +27,6 @@ def find_user_sessions_by_period(user_id: int, start_date: datetime, end_date: d
     -----
     Иван Чеканов
     """
-    start_date = start_date - timedelta(hours=1)
-    end_date = end_date + timedelta(hours=1)
     query = select(Activity).where(and_(
         Activity.session_start > start_date,
         Activity.session_end < end_date,
