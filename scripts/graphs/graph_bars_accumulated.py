@@ -28,7 +28,7 @@ def graph_bars_accumulated(user_ids: list[int], start: datetime, end: datetime) 
 
     Автор
     -----
-    Иван Чеканов
+    Яна Евдокимова
     '''
     guys = []
     wasted_time = []
