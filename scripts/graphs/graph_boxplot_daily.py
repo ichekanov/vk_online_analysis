@@ -29,7 +29,7 @@ def graph_boxplot_daily(user_ids: list[int], start: datetime, end: datetime) -> 
 
     Автор
     -----
-    Иван Чеканов
+    Илья Абрамов
     '''
     guys = []
     wasted_time = [[] for _ in user_ids]

@@ -12,8 +12,8 @@ def create_sessions(intervals: list[dict], user_id: int):
     ---------
     intervals : list[dict]
         Список словарей вида
-            `{"start": datetime.datetime, 
-            "end": datetime.datetime, 
+            `{"start": datetime.datetime,
+            "end": datetime.datetime,
             "platform": int}`
         содержащих информацию о начале и конце сессии, а так же платформе,
         с которой она совершалась

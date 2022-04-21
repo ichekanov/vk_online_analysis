@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from models import Activity, session
 from sqlalchemy import and_, select

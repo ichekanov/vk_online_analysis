@@ -25,7 +25,7 @@ def graph_histogram_sessions(start: datetime, end: datetime) -> Figure:
 
     Автор
     -----
-    Иван Чеканов
+    Егор Волков
     '''
     wasted_time = []
     sessions = find_sessions_by_period(start, end)
