@@ -1,3 +1,20 @@
+# Установка
+Для работы необходим установленный Python интерпритатор.
+Команды написаны для выполнения из корневой папки проекта
+
+1. Создать виртуальную среду для работы проекта
+> python -m venv venv
+
+2. Активировать среду
+> .\venv\Scripts\activate
+
+3. Установить необходимые модули:
+> pip install -r requirements.txt
+
+4. Запуск приложения
+> python .\scripts\main.py
+
+
 # Полезные ссылки
 * SQLAlchemy
     * [Единственная статья на русском](https://pythonru.com/biblioteki/crud-sqlalchemy-core)
