@@ -12,8 +12,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.schema import UniqueConstraint
 
-DB_PATH = "/Users/ichek/Yandex.Disk.localized/code/project_sem_python/csv_processing/project.db"
 
+# DB_PATH = "/Users/ichek/Yandex.Disk.localized/code/project_sem_python/csv_processing/project.db"
+DB_PATH = "data/project.db"
 
 engine = create_engine(f"sqlite:///{DB_PATH}")
 Base = declarative_base()
