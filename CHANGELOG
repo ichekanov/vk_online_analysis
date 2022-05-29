@@ -1,0 +1,35 @@
+ ===== GRAND UPDATE ===== 
+General features in a nutshell
+ - Added PyQt5 to project
+ - Changed structure of project
+ - Created GUI on Qt where you can
+ -- Edit DB
+ -- Get TextReport and GraphicReport
+ 
+  --- Going deeper ---
+1. Added PyQt5 module
+2. Created ./ui folder for GUI files
+3. Created 4 template interface files with QtDesigner
+(Interface.ui, Dialog1.ui, Dialog2.ui, ChooseUsers.ui)
+4. Added pyuic5 module 
+5. Converted GUI templates to Python-files
+(command 'pyuic5 -x file.ui -o file.py')
+6. Changed main.py file to generated GUI file
+(The old one is still available as 'mainConsole.py')
+7. LEARN LEARN LEARN docs, stackoverflow, google
+(Qt Level up from 0('Is there Qt for Python?') to level 3('Qt is simple and nice thing'))
+8. Added testQtWindow.py where you can check out how the basic Qt Window works
+
+ --- Paw-written code ---
+1. ./main.py - contain class of the main window, sets up its object, connects to ./graphs and ./ui modelus of project. Works with DB, triggers other UI
+2. ./ui/.dialog1 - contain class of the dialog window for textReports
+3. ./ui/.dialog2 - contain class of the dialog window for graphReports
+4. ./ui/TextReport1 - contain class which generate Report when triggered by main.py
+5. ./ui/TextReport2 - contain class which generate another one Report when triggered by main.py
+6. ./ChooseUsers - contain class of the dialog window that give list of users by make query to DB and user can choose some of them for Reports
+7. /Graphs - contain template class that add matplotlip plots (Type = Figures) to UI.
+
+--- Other stuff ---
+Fixed a lot of bugs (new and old)
+Added some TODO's 
+Acquired a great desire to sleep. BB ;)
