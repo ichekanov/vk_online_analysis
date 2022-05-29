@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 
-from models import Activity, session
+from scripts.models import Activity, session
 from sqlalchemy import and_, select
-
 
 def find_sessions_by_period(start_date: datetime, end_date: datetime, cut_finish: bool = True) -> list[Activity]:
     """
