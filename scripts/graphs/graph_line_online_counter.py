@@ -29,8 +29,8 @@ def graph_line_online_counter(start: datetime, end: datetime) -> Figure:
     -----
     Иван Чеканов
     '''
-    start = start - timedelta(hours=1)
-    end = end + timedelta(hours=1)
+    start = start
+    end = end
     data = find_sessions_by_period(start, end)
     time_tick = list(pd.date_range(start, end, freq='5S'))
     counter = {t: 0 for t in time_tick}

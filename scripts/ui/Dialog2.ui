@@ -116,7 +116,7 @@
      <item>
       <widget class="QRadioButton" name="radioButton">
        <property name="text">
-        <string>Диограмма рассеивания</string>
+        <string>Диаграмма рассеивания</string>
        </property>
       </widget>
      </item>

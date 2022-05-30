@@ -32,8 +32,8 @@ def graph_daily_activity(user_id: int, start: datetime, end: datetime) -> Figure
     -----
     Иван Чеканов
     '''
-    start = start - timedelta(hours=1)
-    end = end + timedelta(hours=1)
+    start = start
+    end = end
     data = find_user_sessions_by_period(user_id, start, end)
     user_name = find_user_by_id(user_id)[0].name
     # список списков, состоящих из timestamp с шагом 5 секунд и соответствющих

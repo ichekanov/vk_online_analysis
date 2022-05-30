@@ -28,8 +28,8 @@ def find_user_sessions_by_period(user_id: int, start_date: datetime, end_date: d
     Иван Чеканов
     """
     query = select(Activity).where(and_(
-        Activity.session_start > start_date,
-        Activity.session_end < end_date,
+        Activity.session_end > start_date,
+        Activity.session_start < end_date,
         Activity.user_id == user_id
     ))
     result = session.execute(query)
