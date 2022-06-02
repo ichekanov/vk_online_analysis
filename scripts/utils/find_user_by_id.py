@@ -1,13 +1,16 @@
-from models import User, session
+from models import User
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 
-def find_user_by_id(user_id: int) -> User:
+def find_user_by_id(db_session: Session, user_id: int) -> User:
     """
     Функция для поиска пользователя по id в базе данных
 
     Параметры
     ---------
+    db_session: Session
+        сессия SQLAlchemy подключения к базе данных
     user_id : int
         id пользователя в базе данных
 
@@ -21,5 +24,5 @@ def find_user_by_id(user_id: int) -> User:
     Иван Чеканов
     """
     query = select(User).where(User.id == user_id)
-    result = session.execute(query).one()
+    result = db_session.execute(query).one()[0]
     return result

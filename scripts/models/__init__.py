@@ -1,5 +1,5 @@
 """
-Database initialization and connection establishment tool
+Описание моделей базы данных
 
 Автор
 -----
@@ -7,22 +7,15 @@ Database initialization and connection establishment tool
 """
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
-from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.schema import UniqueConstraint
 
 
-# DB_PATH = "/Users/ichek/Yandex.Disk.localized/code/project_sem_python/csv_processing/project.db"
-DB_PATH = "../data/project.db"
-
-engine = create_engine(f"sqlite:///{DB_PATH}")
 Base = declarative_base()
-
 
 class Activity(Base):
     """
-    Activity model for database
+    Модель таблицы активности
     """
     __tablename__ = "activity"
     id = Column(Integer, primary_key=True)
@@ -44,7 +37,7 @@ class Activity(Base):
 
 class User(Base):
     """
-    User model for database
+    Модель таблицы пользователей
     """
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
@@ -53,31 +46,27 @@ class User(Base):
     university_group = Column(Integer, nullable=True)
     UniqueConstraint(vk_id)
 
-    # def __init__(self, name: str, vk_id: int, university_group: int = None) -> None:
-    #     self.name = name
-    #     self.vk_id = vk_id
-    #     if university_group:
-    #         self.university_group = university_group
-
     def __repr__(self):
         return f"User(id={self.id!r}, name={self.name!r}, vk_id={self.vk_id!r})"
+    
+    def __str__(self) -> str:
+        return f"{self.id!r}, {self.name!r}, {self.vk_id!r}"
 
 
 class Platform(Base):
     """
-    Platform object for database
+    Модель таблицы платформ
     """
-    __tablename__ = 'platform'
+    __tablename__ = "platform"
     id = Column(Integer, primary_key=True)
     slug = Column(String(32), nullable=False)
     description = Column(String(128), nullable=False)
     UniqueConstraint(slug, description)
 
     def __repr__(self):
-        return (f"Platform(id={self.id!r}, short_name={self.short_name!r}, "
-                f"full_name={self.full_name!r})")
+        return (f"Platform(id={self.id!r}, short_name={self.slug!r}, "
+                f"full_name={self.description!r})")
+    
+    def __str__(self) -> str:
+        return f"{self.id!r}, {self.slug!r}, {self.description!r}"
 
-
-Base.metadata.create_all(engine)
-Session = sessionmaker(engine)
-session = Session()

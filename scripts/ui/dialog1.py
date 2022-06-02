@@ -13,26 +13,83 @@ from ui.ChooseUsers import ChooseUsers_Dialog
 
 
 class Ui_Dialog(object):
+    '''
+    Класс, описывающий диалог параметров текстового отчёта
+
+    Автор
+    -----
+    Илья Абрамов
+    '''
     def openChooseUsers(self):
+        '''
+        Метод, запускающий окно выбора пользователей для отображения на графике
+
+        Автор
+        -----
+        Илья Абрамов
+        '''
         self.dialog.show()
         self.dialog.exec()
         if self.dialog.result() == 1:
-            print("ChoosedUsers,", self.ui.selected_users)
+            # print(f"{self.ui.selected_users=}")
             self.selected_users = self.ui.selected_users
 
     def setupUi(self, Dialog, mainwindow, connection):
+        '''
+        Метод инициализации интерфейса диалога выбора пользователей
+
+        Автор
+        -----
+        Илья Абрамов, Яна Евдокимова
+        '''
         self.connection = connection
         self.dialog = QtWidgets.QDialog()
         self.ui = ChooseUsers_Dialog()
         self.ui.setupUi(self.dialog, self,self.connection)
+        self.selected_users = []
 
         self.mainwindow = mainwindow
         Dialog.setObjectName("Dialog")
-        Dialog.resize(480, 350)
+        # Dialog.resize(480, 350)
+        Dialog.setWindowIcon(QtGui.QIcon('ui/logo.png'))
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
+        
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
+        self.dateEdit = QtWidgets.QDateTimeEdit(Dialog)
+        self.dateEdit.setObjectName("dateEdit")
+        self.dateEdit.setDateTime(QtCore.QDateTime(2022, 3, 17, 0, 0, 0, 0))  # Базовое время
+        self.dateEdit.setCalendarPopup(True)
+        self.dateEdit.setMinimumDate(QtCore.QDate(2022, 3, 16))
+        self.dateEdit.setMaximumDate(QtCore.QDate(2022, 6, 1))
+        self.verticalLayout.addWidget(self.dateEdit)
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout.addWidget(self.label_2)
+        self.dateEdit_2 = QtWidgets.QDateTimeEdit(Dialog)
+        self.dateEdit_2.setObjectName("dateEdit_2")
+        self.dateEdit_2.setDateTime(QtCore.QDateTime(2022, 3, 18, 0, 0, 0, 0))  # Базовое время
+        self.dateEdit_2.setCalendarPopup(True)
+        self.dateEdit_2.setMinimumDate(QtCore.QDate(2022, 3, 16))
+        self.dateEdit_2.setMaximumDate(QtCore.QDate(2022, 6, 1))
+        self.verticalLayout.addWidget(self.dateEdit_2)
+        self.label_3 = QtWidgets.QLabel(Dialog)
+        self.label_3.setObjectName("label_3")
+        self.verticalLayout.addWidget(self.label_3)
+        self.pushButton = QtWidgets.QPushButton(Dialog)
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.openChooseUsers)
+        self.verticalLayout.addWidget(self.pushButton)
+        self.lineSpacer1 = QtWidgets.QFrame(Dialog)
+        self.lineSpacer1.setFrameShape(QtWidgets.QFrame.HLine)
+        self.lineSpacer1.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.lineSpacer1.setObjectName("lineSpacer1")
+        self.verticalLayout.addWidget(self.lineSpacer1)
+
         self.radioButton_2 = QtWidgets.QRadioButton(Dialog)
         self.radioButton_2.setObjectName("radioButton_2")
         self.verticalLayout.addWidget(self.radioButton_2)
@@ -42,27 +99,7 @@ class Ui_Dialog(object):
         self.radioButton = QtWidgets.QRadioButton(Dialog)
         self.radioButton.setObjectName("radioButton")
         self.verticalLayout.addWidget(self.radioButton)
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.dateEdit = QtWidgets.QDateTimeEdit(Dialog)
-        self.dateEdit.setObjectName("dateEdit")
-        self.dateEdit.setDateTime(QtCore.QDateTime(2022,3,16,0,0,0,0))  # Базовое время
-        self.verticalLayout.addWidget(self.dateEdit)
-        self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
-        self.dateEdit_2 = QtWidgets.QDateTimeEdit(Dialog)
-        self.dateEdit_2.setObjectName("dateEdit_2")
-        self.dateEdit_2.setDateTime(QtCore.QDateTime(2022, 3, 17, 0, 0, 0, 0))  # Базовое время
-        self.verticalLayout.addWidget(self.dateEdit_2)
-        self.label_3 = QtWidgets.QLabel(Dialog)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout.addWidget(self.label_3)
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.pushButton.clicked.connect(self.openChooseUsers)
-        self.verticalLayout.addWidget(self.pushButton)
+
         self.verticalLayout_2.addLayout(self.verticalLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
@@ -77,14 +114,21 @@ class Ui_Dialog(object):
 
 
     def retranslateUi(self, Dialog):
+        '''
+        Метод добавления подписей к элементам интерфейса
+
+        Автор
+        -----
+        Яна Евдокимова
+        '''
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.radioButton_2.setText(_translate("Dialog", "Список сессий за временной промежуток"))
-        self.radioButton_3.setText(_translate("Dialog", "Активные пользователи в заданный временной промежуток"))
-        self.radioButton.setText(_translate("Dialog", "Список пользователей"))
+        Dialog.setWindowTitle(_translate("Dialog", "Создание текстового отчёта"))
+        self.radioButton_2.setText(_translate("Dialog", "Список сессий выбранных пользователей"))
+        self.radioButton_3.setText(_translate("Dialog", "Активные пользователи"))
+        self.radioButton.setText(_translate("Dialog", "Количество сессий выбранных пользователей с разбивкой по платформам (сводная таблица)"))
         self.label.setText(_translate("Dialog", "Укажите начало периода:"))
         self.label_2.setText(_translate("Dialog", "Укажите конец периода:"))
-        self.label_3.setText(_translate("Dialog", "Выберите нужные строки/столбцы таблиц:"))
+        self.label_3.setText(_translate("Dialog", "Выберите пользователей:"))
         self.pushButton.setText(_translate("Dialog", "Открыть таблицу"))
 
 
