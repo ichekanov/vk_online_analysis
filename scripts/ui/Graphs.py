@@ -7,6 +7,13 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationTool
 
 
 class GraphWidget(QtWidgets.QMainWindow):
+    '''
+    Класс, описывающий представление графика внутри главного окна программы
+
+    Автор
+    -----
+    Илья Абрамов
+    '''
     def __init__(self, figure):
         super(GraphWidget, self).__init__()
         self.fig = figure

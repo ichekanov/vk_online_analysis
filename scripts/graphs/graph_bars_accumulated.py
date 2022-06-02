@@ -2,18 +2,22 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-from utils.find_sessions_by_period_and_user_id import \
-    find_sessions_by_period_and_user_id
+from utils.find_user_sessions_by_period import \
+    find_user_sessions_by_period
 from utils.find_user_by_id import find_user_by_id
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import NoResultFound
 
 
-def graph_bars_accumulated(user_ids: list[int], start: datetime, end: datetime) -> Figure:
+def graph_bars_accumulated(db_session: Session, user_ids: list[int], start: datetime, end: datetime) -> Figure:
     '''
     Функция для выбранных пользователей генерирует столбчатый график их
     суммарного времени в сети за указанный промежуток времени.
 
     Параметры
     ---------
+    db_session: Session
+        сессия SQLAlchemy подключения к базе данных
     user_ids : list[int]
         id пользователей, о которых требуется получить информацию
     start : datetime.datetime
@@ -34,13 +38,13 @@ def graph_bars_accumulated(user_ids: list[int], start: datetime, end: datetime) 
     wasted_time = []
     err = []
     for user in user_ids:
-        guys.append(find_user_by_id(user)[0].name)
-        sessions = find_sessions_by_period_and_user_id(user, start, end)
+        guys.append(find_user_by_id(db_session, user).name)
+        sessions = find_user_sessions_by_period(db_session, user, start, end)
         wasted_time.append(0)
         i = 0
         for session in sessions:
             i += 1
-            delta = session[0].session_end - session[0].session_start
+            delta = session.session_end - session.session_start
             wasted_time[-1] += delta.seconds/60
         err.append(i)
     fig, ax = plt.subplots(dpi=100, figsize=(12, 7))
@@ -50,7 +54,7 @@ def graph_bars_accumulated(user_ids: list[int], start: datetime, end: datetime) 
         end.strftime("%d.%m.%Y %H:%M")
     ))
     ax.set_ylabel("Время, минут")
-    # plt.text(18.3,165,"Чёрным цветом обозначена погрешность")
+    # plt.text(0, 0, "Чёрным цветом обозначена погрешность")
     plt.xticks(rotation=45, ha="right")
     plt.grid(True)
     fig.set_facecolor("w")

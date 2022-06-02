@@ -1,5 +1,5 @@
 import colorsys
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -7,15 +7,18 @@ from matplotlib.figure import Figure
 from pandas.core.common import flatten
 from utils.find_user_by_id import find_user_by_id
 from utils.find_user_sessions_by_period import find_user_sessions_by_period
+from sqlalchemy.orm import Session
 
 
-def graph_daily_activity(user_id: int, start: datetime, end: datetime) -> Figure:
+def graph_daily_activity(db_session: Session, user_id: int, start: datetime, end: datetime) -> Figure:
     '''
     Функция генерирует график активности пользователя с цветовой маркировкой
     длительности непрерывной сессии за указанный период.
 
     Параметры
     ---------
+    db_session: Session
+        сессия SQLAlchemy подключения к базе данных
     user : int
         id пользователя, о котором требуется получить информацию
     start : datetime.datetime
@@ -32,14 +35,12 @@ def graph_daily_activity(user_id: int, start: datetime, end: datetime) -> Figure
     -----
     Иван Чеканов
     '''
-    start = start
-    end = end
-    data = find_user_sessions_by_period(user_id, start, end)
-    user_name = find_user_by_id(user_id)[0].name
+    data = find_user_sessions_by_period(db_session, user_id, start, end)
+    user_name = find_user_by_id(db_session, user_id).name
     # список списков, состоящих из timestamp с шагом 5 секунд и соответствющих
     # периодам активности пользователя
-    period = [pd.date_range(session[0].session_start,
-                            session[0].session_end, freq='5S') for session in data]
+    period = [pd.date_range(session.session_start,
+                            session.session_end, freq='5S') for session in data]
     # вспомогательный список, в котором хранятся цвета для заливки точек
     color = []
     # коэффициент скорости смены зеленого на красный

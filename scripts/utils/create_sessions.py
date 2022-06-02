@@ -1,15 +1,18 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import insert
 
-from models import Activity, session
+from models import Activity
+from sqlalchemy.orm import Session
 
 
-def create_sessions(intervals: list[dict], user_id: int):
+def create_sessions(db_session: Session, intervals: list[dict], user_id: int):
     """
     Функция для создания большого количества записей о сессиях пользователя
 
     Параметры
     ---------
+    db_session: Session
+        сессия SQLAlchemy подключения к базе данных
     intervals : list[dict]
         Список словарей вида
             `{"start": datetime.datetime,
@@ -32,8 +35,8 @@ def create_sessions(intervals: list[dict], user_id: int):
                 session_end=slot["end"],
                 platform_id=slot["platform"]
             )
-            session.execute(query)
+            db_session.execute(query)
         except IntegrityError:
-            session.rollback()
+            db_session.rollback()
             print("Session already exists.")
-    session.commit()
+    db_session.commit()

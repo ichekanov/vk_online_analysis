@@ -13,8 +13,22 @@ from PyQt5.QtSql import QSqlQuery
 
 
 class ChooseUsers_Dialog(object):
-    def addUser(self, listItem):
-        print(self.listWidget.currentItem().text(), self.users[self.listWidget.currentItem().text()])
+    '''
+    Класс, описывающий диалог выбора пользователей
+
+    Автор
+    -----
+    Илья Абрамов
+    '''
+    def addUser(self, *args):
+        '''
+        Метод для добавление пользователей в список "выбранные"
+
+        Автор
+        -----
+        Илья Абрамов
+        '''
+        # print(self.listWidget.currentItem().text(), self.users[self.listWidget.currentItem().text()])
         if self.users[self.listWidget.currentItem().text()] not in self.selected_users:
             self.selected_users.add(self.users[self.listWidget.currentItem().text()])
             t = QtWidgets.QListWidgetItem(self.listWidget_2)
@@ -22,15 +36,28 @@ class ChooseUsers_Dialog(object):
 
 
     def deleteUser(self, listItem):
-        print(self.listWidget_2.currentItem().text(), self.users[self.listWidget_2.currentItem().text()])
+        '''
+        Метод для удаления пользователей из списка "выбранные"
+
+        Автор
+        -----
+        Илья Абрамов
+        '''
+        # print(self.listWidget_2.currentItem().text(), self.users[self.listWidget_2.currentItem().text()])
         if self.users[self.listWidget_2.currentItem().text()] in self.selected_users:
             self.selected_users.remove(self.users[self.listWidget_2.currentItem().text()])
             self.listWidget_2.removeItemWidget(listItem)
             self.listWidget_2.takeItem(self.listWidget_2.row(listItem))
-
-        print("USRS",self.selected_users)
+        # print(f"{self.selected_users=}")
 
     def fill_list(self):
+        '''
+        Метод для заполнения списка пользователей данными из БД
+
+        Автор
+        -----
+        Илья Абрамов
+        '''
         Users = QSqlQuery()
         Users.exec(
             """
@@ -38,20 +65,29 @@ class ChooseUsers_Dialog(object):
             """
         )
         self.users = {}
+        self.listWidget.clear()
         while Users.next():
-            self.users.update({Users.value(1) : Users.value(0)})
+            self.users.update({Users.value(1) : Users.value(0)}) # name: id
             t = QtWidgets.QListWidgetItem(self.listWidget)
             t.setText(Users.value(1))
 
 
-    def setupUi(self, Dialog, mainwindow, connection):
+    def setupUi(self, Dialog: QtWidgets.QDialog, MainWindow, connection):
+        '''
+        Метод инициализации интерфейса диалога выбора пользователей
+
+        Автор
+        -----
+        Илья Абрамов, Яна Евдокимова
+        '''
         self.selected_users = set()
-        self.mainwindow = mainwindow
+        self.mainwindow = MainWindow
         self.connection = connection
 
         Dialog.setObjectName("Dialog")
         Dialog.resize(484, 351)
         Dialog.setMinimumSize(QtCore.QSize(484, 351))
+        Dialog.setWindowIcon(QtGui.QIcon('ui/logo.png'))
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setGeometry(QtCore.QRect(390, 270, 81, 61))
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
@@ -60,10 +96,8 @@ class ChooseUsers_Dialog(object):
         self.listWidget = QtWidgets.QListWidget(Dialog)
         self.listWidget.setEnabled(True)
         self.listWidget.setGeometry(QtCore.QRect(20, 20, 171, 301))
-        self.fill_list() # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        self.fill_list()
         self.listWidget.itemDoubleClicked.connect(self.addUser)
-
-
 
         self.listWidget.setObjectName("listWidget")
         self.listWidget_2 = QtWidgets.QListWidget(Dialog)
@@ -78,8 +112,15 @@ class ChooseUsers_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
+        '''
+        Метод добавления подписей к элементам интерфейса
+
+        Автор
+        -----
+        Яна Евдокимова
+        '''
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Выберите пользователей"))
 
 
 if __name__ == "__main__":

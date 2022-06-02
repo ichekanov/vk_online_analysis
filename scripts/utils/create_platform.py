@@ -1,15 +1,19 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import insert
 
-from models import Platform, session
+from models import Platform
+from sqlalchemy.orm import Session
 
 
-def create_platform(slug: str, description: str):
+
+def create_platform(db_session: Session, slug: str, description: str):
     """
     Функция для добавления информации о платформе в базу данных
 
     Параметры
     ---------
+    db_session: Session
+        сессия SQLAlchemy подключения к базе данных
     slug : str
         Короткое название (имя переменной класса Platforms)
     description : str
@@ -21,9 +25,9 @@ def create_platform(slug: str, description: str):
     """
     try:
         query = insert(Platform).values(slug=slug, description=description)
-        session.execute(query)
+        db_session.execute(query)
     except IntegrityError:
-        session.rollback()
+        db_session.rollback()
         print("Platform already exists.")
     else:
-        session.commit()
+        db_session.commit()
