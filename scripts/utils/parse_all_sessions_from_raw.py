@@ -1,9 +1,13 @@
 from datetime import datetime
+from sys import path
 
 from pandas import date_range
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from .create_sessions import create_sessions
 from .get_users import get_users
+from .initialize_db import initialize_db
 
 
 def parse_all_sessions_from_raw(path_to_folder: str, start_date: datetime, end_date: datetime):
@@ -26,6 +30,12 @@ def parse_all_sessions_from_raw(path_to_folder: str, start_date: datetime, end_d
     """
     def round5(number):
         return round(number * 2, -1) // 2
+    
+    path.append("../")
+    engine = create_engine("sqlite:///../data/new.db")
+    db_session = sessionmaker(engine)()
+    
+    initialize_db(db_session)
 
     daterange = date_range(start_date, end_date)
     filenames = [m.strftime("%d-%m-%Y") for m in daterange]
@@ -61,4 +71,4 @@ def parse_all_sessions_from_raw(path_to_folder: str, start_date: datetime, end_d
             if state != 0 and not start:
                 start = round5(timestamp)
                 platform = state
-        create_sessions(online, i)
+        create_sessions(db_session, online, i)

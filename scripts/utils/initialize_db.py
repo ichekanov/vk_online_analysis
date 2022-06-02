@@ -5,7 +5,7 @@ from constants.platforms import Platforms
 from constants.users import USERS
 
 
-def initialize_db():
+def initialize_db(db_session):
     """
     Функция для первоначального заполнения созданной базы данных
 
@@ -14,7 +14,7 @@ def initialize_db():
     Иван Чеканов
     """
     for name, vk_id in zip(USERS.keys(), USERS.values()):
-        create_user(name, vk_id)
+        create_user(db_session, name, vk_id)
 
     for platform in Platforms:
-        create_platform(platform.name, platform.value)
+        create_platform(db_session, platform.name, platform.value)
