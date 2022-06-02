@@ -1,13 +1,19 @@
 from datetime import datetime
 from sys import path
 
+from requests import session
+
+path.append("../")
+
 from pandas import date_range
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 from .create_sessions import create_sessions
 from .get_users import get_users
 from .initialize_db import initialize_db
+import models
 
 
 def parse_all_sessions_from_raw(path_to_folder: str, start_date: datetime, end_date: datetime):
@@ -30,16 +36,15 @@ def parse_all_sessions_from_raw(path_to_folder: str, start_date: datetime, end_d
     """
     def round5(number):
         return round(number * 2, -1) // 2
-    
-    path.append("../")
-    engine = create_engine("sqlite:///../data/new.db")
-    db_session = sessionmaker(engine)()
+
+    db_session = models.db_session
     
     initialize_db(db_session)
+    print("Filled DB with users and platforms")
 
     daterange = date_range(start_date, end_date)
     filenames = [m.strftime("%d-%m-%Y") for m in daterange]
-    users = get_users()
+    users = get_users(db_session)
 
     for i in range(1, len(list(users))+1):
         times = []
@@ -72,3 +77,13 @@ def parse_all_sessions_from_raw(path_to_folder: str, start_date: datetime, end_d
                 start = round5(timestamp)
                 platform = state
         create_sessions(db_session, online, i)
+        print(f"Created sessions for user #{i}/{len(list(users))+1}")
+
+
+if __name__ == "__main__":
+    # из этой папки не работает
+    parse_all_sessions_from_raw(
+        "/Users/ichek/Documents/GitHub/vk_online_analysis/data/raw_data", 
+        datetime(2022,3,15), 
+        datetime(2022,6,2)
+    )

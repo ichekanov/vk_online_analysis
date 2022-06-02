@@ -10,8 +10,13 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import UniqueConstraint
 
+# ? Для заполнения базы данных
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import sessionmaker
+# engine = create_engine("sqlite:////Users/ichek/Documents/GitHub/vk_online_analysis/data/new.db")
 
 Base = declarative_base()
+
 
 class Activity(Base):
     """
@@ -48,7 +53,7 @@ class User(Base):
 
     def __repr__(self):
         return f"User(id={self.id!r}, name={self.name!r}, vk_id={self.vk_id!r})"
-    
+
     def __str__(self) -> str:
         return f"{self.id!r}, {self.name!r}, {self.vk_id!r}"
 
@@ -66,7 +71,11 @@ class Platform(Base):
     def __repr__(self):
         return (f"Platform(id={self.id!r}, short_name={self.slug!r}, "
                 f"full_name={self.description!r})")
-    
+
     def __str__(self) -> str:
         return f"{self.id!r}, {self.slug!r}, {self.description!r}"
 
+# ? Для заполнения базы данных
+# Session = sessionmaker(engine)
+# db_session = Session()
+# Base.metadata.create_all(engine)
