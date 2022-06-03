@@ -26,7 +26,9 @@ from ui.Graphs import GraphWidget
 
 from graphs.graph_scatter import graph_scatter
 from graphs.graph_histogram_sessions import graph_histogram_sessions
+from graphs.graph_histogram_sessions_platforms import graph_histogram_sessions_platforms
 from graphs.graph_bars_accumulated import graph_bars_accumulated
+from graphs.graph_bars_accumulated_by_platforms import graph_bars_accumulated_by_platforms
 from graphs.graph_boxplot_daily import graph_boxplot_daily
 from graphs.graph_daily_activity_multiple import graph_daily_activity_multiple
 from graphs.graph_line_online_counter import graph_line_online_counter
@@ -55,11 +57,7 @@ class Ui_MainWindow(object):
         '''        
         def wrapper(self):
             self.pushButton.setDisabled(True)
-            # self.pushButton.clicked.disconnect()
-            # self.pushButton.clicked.connect(lambda: self.statusbar.showMessage("Сначала закройте окно выбора."))
             self.pushButton_4.setDisabled(True)
-            # self.pushButton_4.clicked.disconnect()
-            # self.pushButton_4.clicked.connect(lambda: self.statusbar.showMessage("Сначала закройте окно выбора."))
             self.tab_4.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tab_5.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tab_6.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -68,11 +66,7 @@ class Ui_MainWindow(object):
             self.tab_5.setEditTriggers(QtWidgets.QAbstractItemView.AllEditTriggers)
             self.tab_6.setEditTriggers(QtWidgets.QAbstractItemView.AllEditTriggers)
             self.pushButton.setEnabled(True)
-            # self.pushButton.clicked.disconnect()
-            # self.pushButton.clicked.connect(self.addRecordBtnClicked)
             self.pushButton_4.setEnabled(True)
-            # self.pushButton_4.clicked.disconnect()
-            # self.pushButton_4.clicked.connect(self.deleteSelectedRows)
             return return_value
         return wrapper
 
@@ -138,11 +132,13 @@ class Ui_MainWindow(object):
         if mode == 1:   w = GraphWidget(graph_bars_accumulated(self.db_session, users, tstart, tend))
         elif mode == 2: w = GraphWidget(graph_boxplot_daily(self.db_session, users, tstart, tend))
         elif mode == 3: w = GraphWidget(graph_daily_activity_multiple(self.db_session, users, tstart, tend))
-        elif mode == 4: w = GraphWidget(graph_histogram_sessions(self.db_session, tstart, tend))
+        # elif mode == 4: w = GraphWidget(graph_histogram_sessions(self.db_session, tstart, tend))
+        elif mode == 4: w = GraphWidget(graph_histogram_sessions_platforms(self.db_session, tstart, tend))
         elif mode == 5: w = GraphWidget(graph_line_online_counter(self.db_session, tstart, tend))
         elif mode == 6: w = GraphWidget(graph_scatter(self.db_session, tstart, tend))
         elif mode == 7: w = GraphWidget(graph_avg_time_by_platform(self.db_session, tstart, tend))
         elif mode == 8: w = GraphWidget(graph_avg_median(self.db_session, tstart, tend))
+        elif mode == 9: w = GraphWidget(graph_bars_accumulated_by_platforms(self.db_session, users, tstart, tend))
 
         self.scrollAreaWidgetContents_3.close()
         self.scrollAreaWidgetContents_3.deleteLater()
@@ -224,6 +220,8 @@ class Ui_MainWindow(object):
             self.Graph(7)  # Сравнение среднего времени по платформам
         elif self.ui2.radioButton_4.isChecked():
             self.Graph(8)  # Сравнение медианной и средней длительности
+        elif self.ui2.radioButton_9.isChecked():
+            self.Graph(9)  # Столбчатый график активности с платформами
         else:
             QtWidgets.QMessageBox().critical(self.centralwidget, "Ошибка", "Не был выбран ни один графический отчёт. Повторите попытку ввода.")
             return
@@ -378,8 +376,8 @@ class Ui_MainWindow(object):
         -----
         Иван Чеканов
         '''
-        self.filepath = QtWidgets.QFileDialog().getOpenFileName(filter="База данных (*.db *.sqlite *.sqlite3)")[0]
-        # self.filepath = "C:\\Users\\is-20\\Documents\\GitHub\\vk_online_analysis\\data\\project.db"
+        # self.filepath = QtWidgets.QFileDialog().getOpenFileName(filter="База данных (*.db *.sqlite *.sqlite3)")[0]
+        self.filepath = "C:\\Users\\is-20\\Documents\\GitHub\\vk_online_analysis\\data\\project.db"
         if not self.filepath:
             return
         self.dataBases(MainWindow)
@@ -543,8 +541,6 @@ class Ui_MainWindow(object):
         self.action = QtWidgets.QAction(MainWindow)
         self.action.setObjectName("action")
         self.action.triggered.connect(self.openDB)
-        # self.action_2 = QtWidgets.QAction(MainWindow)
-        # self.action_2.setObjectName("action_2")
         self.action_3 = QtWidgets.QAction(MainWindow)
         self.action_3.setObjectName("action_3")
         self.action_3.setDisabled(True)
@@ -561,8 +557,6 @@ class Ui_MainWindow(object):
         self.action_8.setObjectName("action_8")
         self.action_8.setDisabled(True)
         self.action_8.triggered.connect(self.dialog2ButtonClicked)
-        # self.action_10 = QtWidgets.QAction(MainWindow)  # Сохранить график
-        # self.action_10.setObjectName("action_10")
         self.action_11 = QtWidgets.QAction(MainWindow)
         self.action_11.setObjectName("action_11")
         self.action_11.triggered.connect(self.btnClickSaveUsers)
@@ -581,7 +575,6 @@ class Ui_MainWindow(object):
         self.menu_2.addAction(self.action_5)
         self.menu_3.addAction(self.action_8)
         self.menu_3.addSeparator()
-        # self.menu_3.addAction(self.action_10)
         self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menu_2.menuAction())
         self.menubar.addAction(self.menu_3.menuAction())
@@ -614,12 +607,10 @@ class Ui_MainWindow(object):
         self.menu_2.setTitle(_translate("MainWindow", "Отчёт"))
         self.menu_3.setTitle(_translate("MainWindow", "График"))
         self.action.setText(_translate("MainWindow", "Открыть базу данных"))
-        # self.action_2.setText(_translate("MainWindow", "Cохранить"))
         self.action_3.setText(_translate("MainWindow", "Сгенерировать"))
         self.action_5.setText(_translate("MainWindow", "Сохранить отчёт"))
         self.action_7.setText(_translate("MainWindow", "Сохранить базу данных"))
         self.action_8.setText(_translate("MainWindow", "Построить"))
-        # self.action_10.setText(_translate("MainWindow", "Сохранить график"))
         self.action_11.setText(_translate("MainWindow", "Сохранить список пользователей в файл"))
         self.action_12.setText(_translate("MainWindow", "Сохранить список платформ в файл"))
 

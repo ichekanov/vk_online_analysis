@@ -31,7 +31,6 @@ class Ui_Dialog(object):
         self.dialog.show()
         self.dialog.exec()
         if self.dialog.result() == 1:
-            # print(f"{self.ui.selected_users=}")
             self.selected_users = self.ui.selected_users
 
     def setupUi(self, Dialog, mainwindow, connection):
@@ -130,6 +129,7 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "Укажите конец периода:"))
         self.label_3.setText(_translate("Dialog", "Выберите пользователей:"))
         self.pushButton.setText(_translate("Dialog", "Открыть таблицу"))
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setText(_translate("Dialog", "Отмена"))
 
 
 if __name__ == "__main__":

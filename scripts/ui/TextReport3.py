@@ -22,7 +22,7 @@ class TextReport3(QTableWidget):
 
         Автор
         -----
-        Иван Чеканов
+        Илья Абрамов, Иван Чеканов
         '''
         super().__init__()
 
