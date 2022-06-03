@@ -51,9 +51,13 @@ def graph_avg_time_by_platform(db_session: Session, start: datetime, end: dateti
     plt.grid(True)
     bar = ax1.bar(platforms, lengths, width, label="Средняя продолжительность", color='orange')
     ax1.set_ylabel("Время, секунд")
+    ax1.tick_params('y', colors='orange')
+    ax1.yaxis.label.set_color('orange')
     ax2 = ax1.twinx()
     dot = ax2.scatter(platforms, numbers, label="Число сессий", s=adjusted_numbers, alpha=0.5)
     ax2.set_ylabel("Число сессий")
+    ax2.tick_params('y', colors='C0')
+    ax2.yaxis.label.set_color('C0')
     ax1.set_title("Зависимость средней длительности сессии в ВК от платформы в период {} -- {}".format(
         start.strftime("%d.%m.%Y %H:%M"),
         end.strftime("%d.%m.%Y %H:%M")

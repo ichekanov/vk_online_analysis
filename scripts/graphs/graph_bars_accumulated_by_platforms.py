@@ -6,10 +6,10 @@ from utils.find_user_sessions_by_period import \
     find_user_sessions_by_period
 from utils.find_user_by_id import find_user_by_id
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import NoResultFound
+from utils.get_platforms import get_platforms
 
 
-def graph_bars_accumulated(db_session: Session, user_ids: list[int], start: datetime, end: datetime) -> Figure:
+def graph_bars_accumulated_by_platforms(db_session: Session, user_ids: list[int], start: datetime, end: datetime) -> Figure:
     '''
     Функция для выбранных пользователей генерирует столбчатый график их
     суммарного времени в сети за указанный промежуток времени.
@@ -34,27 +34,27 @@ def graph_bars_accumulated(db_session: Session, user_ids: list[int], start: date
     -----
     Яна Евдокимова
     '''
-    guys = []
-    wasted_time = []
-    err = []
-    for user in user_ids:
-        guys.append(find_user_by_id(db_session, user).name)
-        sessions = find_user_sessions_by_period(db_session, user, start, end)
-        wasted_time.append(0)
-        i = 0
+    platforms = {m.id: m.description for m in get_platforms(db_session)}
+    guys = {}
+    for user_id in user_ids:
+        user = find_user_by_id(db_session, user_id)
+        guys[user.id] = user.name
+    active_users = {user_id: {platform_id: 0 for platform_id in platforms.keys()} for user_id in user_ids}
+    for user_id in user_ids:
+        sessions = find_user_sessions_by_period(db_session, user_id, start, end)
         for session in sessions:
-            i += 1
-            delta = session.session_end - session.session_start
-            wasted_time[-1] += delta.seconds/60
-        err.append(i)
+            active_users[session.user_id][session.platform_id] += (session.session_end-session.session_start).total_seconds()
     fig, ax = plt.subplots(dpi=100, figsize=(12, 7))
-    ax.bar(guys, wasted_time, yerr=err, capsize=10)
+    for i, platform in enumerate(platforms.values()):
+        accum = [sum(list(m.values())[:i])/60 for m in active_users.values()]
+        curr = [list(m.values())[i]/60 for m in active_users.values()]
+        ax.bar(guys.values(), curr, bottom=accum, label=platform)
     ax.set_title("Суммарное время в ВК за период {} -- {} для выбранных пользователей".format(
         start.strftime("%d.%m.%Y %H:%M"),
         end.strftime("%d.%m.%Y %H:%M")
     ))
     ax.set_ylabel("Время, минут")
-    # plt.text(0, 0, "Чёрным цветом обозначена погрешность")
+    ax.legend()
     plt.xticks(rotation=45, ha="right")
     plt.grid(True)
     fig.set_facecolor("w")
