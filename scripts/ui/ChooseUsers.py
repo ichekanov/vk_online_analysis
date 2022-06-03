@@ -43,12 +43,11 @@ class ChooseUsers_Dialog(object):
         -----
         Илья Абрамов
         '''
-        # print(self.listWidget_2.currentItem().text(), self.users[self.listWidget_2.currentItem().text()])
         if self.users[self.listWidget_2.currentItem().text()] in self.selected_users:
             self.selected_users.remove(self.users[self.listWidget_2.currentItem().text()])
             self.listWidget_2.removeItemWidget(listItem)
             self.listWidget_2.takeItem(self.listWidget_2.row(listItem))
-        # print(f"{self.selected_users=}")
+
 
     def fill_list(self):
         '''
@@ -70,7 +69,12 @@ class ChooseUsers_Dialog(object):
             self.users.update({Users.value(1) : Users.value(0)}) # name: id
             t = QtWidgets.QListWidgetItem(self.listWidget)
             t.setText(Users.value(1))
+    
 
+    def clear_all_selected(self, *args):
+        self.selected_users = set()
+        self.listWidget_2.clear()
+    
 
     def setupUi(self, Dialog: QtWidgets.QDialog, MainWindow, connection):
         '''
@@ -89,16 +93,15 @@ class ChooseUsers_Dialog(object):
         Dialog.setMinimumSize(QtCore.QSize(484, 351))
         Dialog.setWindowIcon(QtGui.QIcon('ui/logo.png'))
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setGeometry(QtCore.QRect(390, 270, 81, 61))
+        self.buttonBox.setGeometry(QtCore.QRect(390, 240, 81, 91))
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Reset|QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.listWidget = QtWidgets.QListWidget(Dialog)
         self.listWidget.setEnabled(True)
         self.listWidget.setGeometry(QtCore.QRect(20, 20, 171, 301))
         self.fill_list()
         self.listWidget.itemDoubleClicked.connect(self.addUser)
-
         self.listWidget.setObjectName("listWidget")
         self.listWidget_2 = QtWidgets.QListWidget(Dialog)
         self.listWidget_2.setEnabled(True)
@@ -109,7 +112,9 @@ class ChooseUsers_Dialog(object):
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)
         self.buttonBox.rejected.connect(Dialog.reject)
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Reset).clicked.connect(self.clear_all_selected)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
 
     def retranslateUi(self, Dialog):
         '''
@@ -121,6 +126,8 @@ class ChooseUsers_Dialog(object):
         '''
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Выберите пользователей"))
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Reset).setText(_translate("Dialog", "Очистить"))
+        self.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel).setText(_translate("Dialog", "Отмена"))
 
 
 if __name__ == "__main__":
