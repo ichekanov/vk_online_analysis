@@ -43,7 +43,10 @@ def graph_bars_accumulated(db_session: Session, user_ids: list[int], start: date
         wasted_time.append(0)
         i = 0
         for session in sessions:
-            i += 1
+            if session.platform_id == 4:
+                i += 0.5
+            else:
+                i += 2.5
             delta = session.session_end - session.session_start
             wasted_time[-1] += delta.seconds/60
         err.append(i)
