@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from scripts.models import Activity
+from models import Activity
 from sqlalchemy import and_, select
 from sqlalchemy.orm import Session
 
