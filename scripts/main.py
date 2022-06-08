@@ -376,8 +376,8 @@ class Ui_MainWindow(object):
         -----
         Иван Чеканов
         '''
-        # self.filepath = QtWidgets.QFileDialog().getOpenFileName(filter="База данных (*.db *.sqlite *.sqlite3)")[0]
-        self.filepath = "C:\\Users\\is-20\\Documents\\GitHub\\vk_online_analysis\\data\\project.db"
+        self.filepath = QtWidgets.QFileDialog().getOpenFileName(filter="База данных (*.db *.sqlite *.sqlite3)")[0]
+        # self.filepath = "C:\\Users\\is-20\\Documents\\GitHub\\vk_online_analysis\\data\\project.db"
         if not self.filepath:
             return
         self.dataBases(MainWindow)
