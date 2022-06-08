@@ -326,6 +326,9 @@ class Ui_MainWindow(object):
         self.model1.setHeaderData(3, QtCore.Qt.Horizontal, "Group")
         self.model1.select()
 
+        if not self.model1.rowCount():
+            self.connection.close()
+            return False
 
         self.tab_4 = QtWidgets.QTableView()
         self.tab_4.setModel(self.model1)
@@ -360,7 +363,7 @@ class Ui_MainWindow(object):
         self.tab_6.sortByColumn(0, QtCore.Qt.DescendingOrder)  # Qt.DescendingOrder Qt.AscendingOrder
         self.tab_6.resizeColumnsToContents()
         
-        self.statusbar.showMessage("Подключение к базе данных выполнено успешно.")
+        return True
 
         
     def openDB(self, MainWindow: QtWidgets.QMainWindow):
@@ -380,10 +383,17 @@ class Ui_MainWindow(object):
         # self.filepath = "C:\\Users\\is-20\\Documents\\GitHub\\vk_online_analysis\\data\\project.db"
         if not self.filepath:
             return
-        self.dataBases(MainWindow)
+        if not self.dataBases(MainWindow):
+            QtWidgets.QMessageBox().critical(
+                self.centralwidget, "Ошибка", "Структура выбранной базы данных не соответствует требуемой для работы программы. Выберите другую базу данных.")
+            return
         engine = create_engine(f"sqlite:///{self.filepath}")
         self.db_session = sessionmaker(engine)()
         # setting up the UI
+        self.statusbar.showMessage("Подключение к базе данных выполнено успешно.")
+        self.action.triggered.disconnect()
+        self.action.triggered.connect(lambda: QtWidgets.QMessageBox().warning(
+            self.centralwidget, "Предупреждение", "База данных уже выбрана. Чтобы сменить базу данных перезапустите приложение."))
         self.ui2.setupUi(self.dialog2, self, self.connection)
         self.ui1.setupUi(self.dialog1, self, self.connection)
         self.tab_4.setObjectName("tab_4")
@@ -418,7 +428,7 @@ class Ui_MainWindow(object):
         Илья Абрамов, Иван Чеканов
         '''
         if self.connection:
-            save_users()
+            save_users(self.db_session)
             self.statusbar.showMessage("Список пользователей успешно сохранён.")
         else:
             QtWidgets.QMessageBox().critical(self.centralwidget, "Ошибка", "Невозможно выполнить сохранение. Сначала откройте базу данных.")
@@ -433,7 +443,7 @@ class Ui_MainWindow(object):
         Илья Абрамов, Иван Чеканов
         '''
         if self.connection:
-            save_platforms()
+            save_platforms(self.db_session)
             self.statusbar.showMessage("Список платформ успешно сохранён.")
         else:
             QtWidgets.QMessageBox().critical(self.centralwidget, "Ошибка", "Невозможно выполнить сохранение. Сначала откройте базу данных.")

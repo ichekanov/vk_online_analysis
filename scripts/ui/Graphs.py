@@ -2,6 +2,7 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from matplotlib.figure import Figure
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 
@@ -14,7 +15,7 @@ class GraphWidget(QtWidgets.QMainWindow):
     -----
     Илья Абрамов
     '''
-    def __init__(self, figure):
+    def __init__(self, figure: Figure):
         super(GraphWidget, self).__init__()
         self.fig = figure
 
