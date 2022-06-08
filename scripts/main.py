@@ -199,7 +199,8 @@ class Ui_MainWindow(object):
         multiple_buttons = [
             self.ui2.radioButton_2.isChecked(), 
             self.ui2.radioButton_5.isChecked(), 
-            self.ui2.radioButton_6.isChecked()
+            self.ui2.radioButton_6.isChecked(),
+            self.ui2.radioButton_9.isChecked()
         ]
         if any(multiple_buttons) and not self.ui2.selected_users:
             QtWidgets.QMessageBox().critical(self.centralwidget, "Ошибка", "Не было выбрано ни одного пользователя. Повторите попытку ввода.")
