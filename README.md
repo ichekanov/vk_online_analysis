@@ -7,8 +7,9 @@
 
 > Для работы необходим установленный Python интерпритатор.
 
-
-
+###### Доступные базы данных
+* **\data\project.db** - Актуальная база данных проекта
+* **\data\old_project.db** - Устаревшая база данных
 
 # Полезные ссылки
 * [GitLab  Проекта](https://git.miem.hse.ru/ischekanov/vk_online_analysis)
