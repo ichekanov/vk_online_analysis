@@ -18,6 +18,7 @@
 
 
 # Полезные ссылки
+* [GitLab  Проекта](https://git.miem.hse.ru/ischekanov/vk_online_analysis)
 * SQLAlchemy
     * [Единственная статья на русском](https://pythonru.com/biblioteki/crud-sqlalchemy-core)
     * [Хорошая статья на английском](https://realpython.com/python-sqlite-sqlalchemy/#working-with-sqlalchemy-and-python-objects)
