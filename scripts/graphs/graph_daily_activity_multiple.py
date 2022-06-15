@@ -35,7 +35,11 @@ def graph_daily_activity_multiple(db_session: Session, user_ids: list[int], star
     -----
     Иван Чеканов
     '''
-    fig, [*plots] = plt.subplots(nrows=len(user_ids))
+    if len(user_ids) == 1:
+        fig, plots = plt.subplots(nrows=1)
+        plots = [plots]
+    else:
+        fig, [*plots] = plt.subplots(nrows=len(user_ids))
     for ax, user_id in zip(plots, user_ids):
         data = find_user_sessions_by_period(db_session, user_id, start, end)
         user_name = find_user_by_id(db_session, user_id).name
